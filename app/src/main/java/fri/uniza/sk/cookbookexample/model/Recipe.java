@@ -1,5 +1,12 @@
 package fri.uniza.sk.cookbookexample.model;
 
+        import android.content.Context;
+        import android.content.res.AssetManager;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
+
+        import java.io.IOException;
+        import java.io.InputStream;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
@@ -40,4 +47,19 @@ public class Recipe {
         this.additionalProperties.put(name, value);
     }
 
+    @JsonIgnore
+    public Bitmap getBitmapFromAsset(Context context) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream istr;
+        Bitmap bitmap = null;
+        try {
+            istr = assetManager.open(imageUrl);
+            bitmap = BitmapFactory.decodeStream(istr);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
 }
