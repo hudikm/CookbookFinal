@@ -1,21 +1,21 @@
 {
   "environment": "web",
-  "source": "10MFPqrG2y1f9jwJ-m79bs7o7MDEj4c9DT1uq9ZUs2nc",
-  "format": "md",
+  "source": "index.md",
+  "format": "html",
   "prefix": "../../",
   "mainga": "UA-49880327-14",
-  "updated": "2019-02-14T15:56:30Z",
+  "updated": "2019-03-05T18:46:54+01:00",
   "id": "your-first-pwapp",
   "duration": 0,
   "title": "Your First Progressive Web App",
   "author": "petele",
-  "summary": "In this codelab, you'll build a Progressive Web App, which loads quickly, even on flaky networks, has an icon on the homescreen, and loads as a top-level, full screen experience.",
-  "theme": "web",
+  "summary": "In this codelab, you’ll build a Progressive Web App, which loads quickly, even on flaky networks, has an icon on the homescreen, and loads as a top-level, full screen experience.",
+  "theme": "",
   "status": [
-    "draft"
+    "[draft]"
   ],
   "category": [
-    "Web"
+    "web"
   ],
   "tags": [
     "cds17",
