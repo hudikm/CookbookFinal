@@ -1,6 +1,8 @@
 package fri.uniza.sk.cookbookexample;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,19 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import fri.uniza.sk.cookbookexample.RecipeFragment.OnListFragmentInteractionListener;
+import fri.uniza.sk.cookbookexample.RecipesFragment.OnListFragmentInteractionListener;
 import fri.uniza.sk.cookbookexample.model.Recipe;
 
 import java.util.List;
 
 
-public class MyRecepyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecepyRecyclerViewAdapter.ViewHolder> {
+public class MyRecipeRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipeRecyclerViewAdapter.ViewHolder> {
 
     private final List<Recipe> recipes;
     private final OnListFragmentInteractionListener mListener;
     private Context context;
+    private RecyclerView.LayoutManager layoutManager;
 
-    public MyRecepyRecyclerViewAdapter(List<Recipe> items, OnListFragmentInteractionListener listener) {
+    public MyRecipeRecyclerViewAdapter(List<Recipe> items, OnListFragmentInteractionListener listener) {
         recipes = items;
         mListener = listener;
     }
@@ -28,8 +31,16 @@ public class MyRecepyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecepyRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recipe, parent, false);
+        View view;
+        if (layoutManager.getClass().equals(LinearLayoutManager.class)) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_recipe_item, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_recipe_item_cardview, parent, false);
+        }
+
+
         return new ViewHolder(view);
     }
 
@@ -46,7 +57,7 @@ public class MyRecepyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecepyRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem,position);
+                    mListener.onListFragmentInteraction(holder.mItem, position);
                 }
             }
         });
@@ -67,6 +78,9 @@ public class MyRecepyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecepyRe
             super(view);
             mView = view;
             mImageView = (ImageView) view.findViewById(R.id.smallImage);
+
+            // Sets whether the View's Outline should be used to clip the contents of the View. (Used for rounded corners)
+            mImageView.setClipToOutline(true);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
@@ -74,5 +88,13 @@ public class MyRecepyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecepyRe
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        layoutManager = recyclerView.getLayoutManager();
+
     }
 }

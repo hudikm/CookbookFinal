@@ -1,16 +1,18 @@
 package fri.uniza.sk.cookbookexample;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fri.uniza.sk.cookbookexample.model.DataFragment;
 import fri.uniza.sk.cookbookexample.model.Recipe;
-import fri.uniza.sk.cookbookexample.model.Singleton;
 
 /**
  * A fragment representing a list of Items.
@@ -18,27 +20,29 @@ import fri.uniza.sk.cookbookexample.model.Singleton;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class RecipeFragment extends Fragment {
+public class RecipesFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    private DataFragment dataFragment;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RecipeFragment() {
+    public RecipesFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static RecipeFragment newInstance() {
-        RecipeFragment fragment = new RecipeFragment();
+    public static RecipesFragment newInstance() {
+        RecipesFragment fragment = new RecipesFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataFragment = ((MainActivity) getActivity()).getDataFragment();
 
     }
 
@@ -51,8 +55,12 @@ public class RecipeFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRecepyRecyclerViewAdapter(Singleton.getInstance().getRecipes(), mListener));
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+            }
+            recyclerView.setAdapter(new MyRecipeRecyclerViewAdapter(dataFragment.getRecipes(), mListener));
 
         }
         return view;
@@ -76,6 +84,7 @@ public class RecipeFragment extends Fragment {
         mListener = null;
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -87,7 +96,7 @@ public class RecipeFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onListFragmentInteraction(Recipe item, int position);
     }
 }
